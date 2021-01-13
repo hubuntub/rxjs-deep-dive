@@ -1,0 +1,25 @@
+{
+  "name": "rxjs-deep-dive",
+  "description": "RxJS deep dive presentation.",
+  "keywords": [
+    "rxjs",
+    "revealjs"
+  ],
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hubuntub/rxjs-deep-dive.git"
+  },
+  "homepage": "https://github.com/hubuntub/rxjs-deep-dive",
+  "license": "MIT",
+  "scripts": {
+    "serve": "reveal-md slides.md -w",
+    "build": "reveal-md slides.md --static _build"
+  },
+  "dependencies": {
+    "reveal-md": "4.3.0"
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}
