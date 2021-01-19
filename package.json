@@ -13,7 +13,7 @@
   "homepage": "https://github.com/hubuntub/rxjs-deep-dive",
   "license": "MIT",
   "scripts": {
-    "serve": "reveal-md slides.md -w",
+    "serve": "reveal-md slides.md -w=1111",
     "build": "reveal-md slides.md --static _build"
   },
   "dependencies": {

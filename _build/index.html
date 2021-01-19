@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>reveal-md</title>
+    <link rel="shortcut icon" href="./favicon.ico"/>
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/zenburn.css" />
+
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">Deep dive into RXJS ❤️
+
+![intro](img/rxjs.gif)
+
+<aside class="notes"><p>test note</p>
+</aside></script></section><section  data-markdown><script type="text/template">RXJS
+  * Reactive Programming
+* Library using Observables (Observer pattern)
+* Treating events
+* Manipulating event with operators
+* Like Lodash for async
+</script></section><section  data-markdown><script type="text/template">Reactive
+
+![reactive](img/parking.png)
+</script></section><section  data-markdown><script type="text/template">RXJS
+* Reactive Programming
+  * Library using Observables (Observer pattern)
+* Treating events
+* Manipulating event with operators
+* Like Lodash for async
+</script></section><section  data-markdown><script type="text/template">Observer
+
+![intro](img/uml.png)
+</script></section><section  data-markdown><script type="text/template">
+RXJS
+* Reactive Programming
+* Library using Observables (Observer pattern)
+  * Treating events
+* Manipulating event with operators
+</script></section><section ><section data-markdown><script type="text/template">RXJS
+* Reactive Programming
+* Library using Observables (Observer pattern)
+* Treating events
+  * Manipulating event with operators
+</script></section><section data-markdown><script type="text/template">
+Before Observables, we used Promise...
+
+```typescript
+const computePayPeriodContract = new Promise(
+    (resolve, reject) =>
+        setTimeout(() => resolve({period: 'June 2020'})
+            , 5000));
+
+computePayPeriodContract.then(
+    value => console.log(`Pay period contract: ${value.period}`),
+    error => console.error(error)
+);
+
+```</script></section><section data-markdown><script type="text/template">Promise with chaining
+
+```typescript
+const computePayPeriodContract = new Promise(
+    (resolve, reject) => 
+        setTimeout(() => resolve({pay: 'June 2020'})
+            , 5000));
+
+const updateStatus = new Promise(
+    (resolve, reject) =>
+        setTimeout(() => resolve('Done'), 1000));
+
+computePayPeriodContract
+    .then(value => updateStatus, error => console.error(error))
+    .then(status => console.log(`Contract status: ${status}`))
+    .catch(error => console.error(error));
+
+```</script></section><section data-markdown><script type="text/template">
+Promise
+
+* Readonly Single future value
+* Not lazy
+* Immutable & uncancellable
+</script></section></section><section ><section data-markdown><script type="text/template">
+Observable
+
+```typescript
+const myObservable = (observer) => {
+    observer.next('🍕');
+    const id = setTimeout(() => observer.complete(), 1000);
+    
+    return () => clearTimeout(id);
+}
+
+// const teardown = observable.subscribe() ;-)
+const teardown = myObservable({
+    next(value) {console.log(value);},
+    error(error) {console.error(error);},
+    complete() {console.info('Done');}
+});
+
+// setTimeout(() => teardown.unsubscribe(), 1000); ;-)
+setTimeout(() => teardown(), 1000);
+```
+</script></section><section data-markdown><script type="text/template">Observable
+
+* Streams of any type of things and over any amount of time
+* Lazy
+* Cancellable
+</script></section><section data-markdown><script type="text/template">Operator
+
+```typescript
+
+const myMap = (observable, mapFn) => {
+    (observer) => observable({
+        next(value) {observer.next(mapFn(value));},
+        error(error) {observer.error(error);},
+        complete() {observer.complete();}
+    })
+};
+
+const source = myMap(myObservable, o => o + '🍪');
+source({ next(value) {console.log(value)} })
+
+```
+</script></section></section><section  data-markdown><script type="text/template">
+Let's code()
+
+![code](img/code.gif)
+
+</script></section><section  data-markdown><script type="text/template">
+* [multicast](https://stackblitz.com/edit/rxjs-3ztwe3?file=index.ts) | [unicast](https://stackblitz.com/edit/rxjs-uq2e6d?file=index.ts)
+* [switchMap | exhaustMap](https://stackblitz.com/edit/rxjs-2mvaax?file=index.ts)
+* [catchError](https://stackblitz.com/edit/rxjs-aanbzo?file=index.ts)
+* [concatMap | mergeMap](https://stackblitz.com/edit/rxjs-9kh2dv?file=index.ts)
+* [combineLatest](https://stackblitz.com/edit/rxjs-arpcz6?file=index.ts)
+* [forkJoin](https://stackblitz.com/edit/rxjs-swadhe?file=index.ts)
+</script></section><section  data-markdown><script type="text/template">References
+
+* [Tree decision](https://rxjs.dev/operator-decision-tree)
+* [Rxviz](https://rxviz.com)
+</script></section><section  data-markdown><script type="text/template">
+![bye](img/bye.gif)
+</script></section></div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+</html>
